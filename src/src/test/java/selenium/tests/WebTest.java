@@ -37,9 +37,9 @@ public class WebTest
 		//driver = new HtmlUnitDriver();
 		ChromeDriverManager.getInstance().setup();
 		ChromeOptions options = new ChromeOptions();
-		//options.addArguments("headless");
-		//options.addArguments("window-size=1200x600");
-		//options.addArguments("blink-settings=imagesEnabled=false");
+		options.addArguments("headless");
+		options.addArguments("window-size=1200x600");
+		options.addArguments("blink-settings=imagesEnabled=false");
 		driver = new ChromeDriver(options);
 	}
 	
