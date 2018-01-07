@@ -58,7 +58,7 @@ public class WebTest
         assertEquals("Google", driver.getTitle());		
 	}
 	
-	private static void WaitForAngularLoad()
+	private static void WaitForAngularToLoad()
 	{
 		new NgWebDriver((ChromeDriver)driver).waitForAngularRequestsToFinish();
 	}
@@ -73,12 +73,52 @@ public class WebTest
 		//WebDriverWait wait = new WebDriverWait(driver, 30);
 		//wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xPath)));
 
-		WaitForAngularLoad();
+		WaitForAngularToLoad();
 		WebElement span = driver.findElement(By.xpath(xPath));
 
 		assertNotNull(span);
 		assertThat("We always have coffee", Integer.parseInt(span.getText()),
 				   greaterThan(0));
+	}
+
+	@Test
+	public void VerifyAddInventory() throws Exception
+	{
+		driver.get(ROOT+"inventory.html");
+		
+		WaitForAngularToLoad();
+
+		String coffeeValue = driver.findElement(By.xpath("//span[@id='currentCoffee']")).getText();
+		String milkValue = driver.findElement(By.xpath("//span[@id='currentMilk']")).getText();
+		String sugarValue = driver.findElement(By.xpath("//span[@id='currentSugar']")).getText();
+		String chocolateValue = driver.findElement(By.xpath("//span[@id='currentChocolate']")).getText();
+
+		WebElement coffeeInput = driver.findElement(By.xpath("//input[@name='coffee']"));
+		WebElement milkInput = driver.findElement(By.xpath("//input[@name='milk']"));
+		WebElement sugarInput = driver.findElement(By.xpath("//input[@name='sugar']"));
+		WebElement chocolateInput = driver.findElement(By.xpath("//input[@name='chocolate']"));
+
+		coffeeInput.sendKeys("1");
+		milkInput.sendKeys("1");
+		sugarInput.sendKeys("1");
+		chocolateInput.sendKeys("1");
+
+		WebElement button = driver.findElement(By.xpath("//input[@value='Submit']"));
+		button.click();
+
+		// Get page again.
+		driver.get(ROOT+"inventory.html");
+		WaitForAngularToLoad();
+
+		String currentCoffee = driver.findElement(By.xpath("//span[@id='currentCoffee']")).getText();
+		String currentMilk = driver.findElement(By.xpath("//span[@id='currentMilk']")).getText();
+		String currentSugar = driver.findElement(By.xpath("//span[@id='currentSugar']")).getText();
+		String currentChocolate = driver.findElement(By.xpath("//span[@id='currentChocolate']")).getText();
+
+		assertEquals(Integer.parseInt(currentCoffee), Integer.parseInt(coffeeValue)+1);
+		assertEquals(Integer.parseInt(currentMilk), Integer.parseInt(milkValue)+1);
+		assertEquals(Integer.parseInt(currentSugar), Integer.parseInt(sugarValue)+1);
+		assertEquals(Integer.parseInt(currentChocolate), Integer.parseInt(chocolateValue)+1);
 	}
 
 }
