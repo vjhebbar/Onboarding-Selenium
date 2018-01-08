@@ -16,14 +16,14 @@ Clone this repo, then in Eclipse, run JUnit tests. Optionally, in the console, r
 
 A driver provides a unified interface for automating interaction with a browser. For example, `WebDriver` is an abstract interface that allows you to open a browser window and navigate, or drive, through the page to get to the desired page or perform the requested action, such as entering values in a form and clicking buttons. Further, you read the page and verify that it contains the correct values and properties.
 
-There are several concrete drivers available, such as `FirefoxDriver`, and `ChromeDriver`, which will drive Firefox and Chrome. Using these drivers, you can see the browser perform the actions in real-time. While this can be useful for debugging, for testing purposes, this would create too much performance overhead. Instead, it is common to use light-weight versions of the web driver for faster tests. For example, [HtmlUnitDriver](https://github.com/SeleniumHQ/selenium/wiki/HtmlUnitDriver), provides a fast driver; however, it is always effective for rendering pages with Javascript. Alternatively, it is possible to use headless versions of browsers, such as the recent headless version of Chrome. This is what we'll be using for this workshop.
+There are several concrete drivers available, such as `FirefoxDriver`, and `ChromeDriver`, which will drive Firefox and Chrome, respectively. Using these drivers, you can see the browser perform the actions in real-time. While this can be useful for debugging, for testing purposes, this would create too much performance overhead. Instead, it is common to use light-weight versions of the web driver for faster tests. For example, [HtmlUnitDriver](https://github.com/SeleniumHQ/selenium/wiki/HtmlUnitDriver) provides a fast driver; however, it is still generally effective for rendering pages with Javascript. Alternatively, it is possible to use headless versions of browsers, such as the recent headless version of Chrome. This is what we'll be using for this workshop.
 
 **EXERCISE**: Comment out the headless options for Chrome. You should be able to see the browser startup.
 
 
 ### Checking values
 
-In a browser, a html page is represented by DOM, a document model consisting of a tree of elements, attributes, and values. XPath is a tree selector language that makes it easy to write a query to select all elements that match a criteria.
+In a browser, a html page is represented by DOM, a document model consisting of a tree of elements, attributes, and values. XPath is a tree selector language that makes it easy to write a query to select all elements that match a criterion.
 
 ##### Quick reference
 
@@ -35,17 +35,17 @@ In a browser, a html page is represented by DOM, a document model consisting of 
 * `//h2[.='Search Results']` Select all h2 elements with value = "Search Results".
 * `//h2/following-sibling::div"` Select the sibiling div after a h2 element.
 
-Let's play around in Chrome's console.  Search for anything, and go to google's search result page.  In a console, type: `$x("//a")`. This allows us to use a xpath expression to select all links.
+Let's play around in Chrome's console (Hit `F12`, and then click `Console` to open).  Search for anything, and go to Google's search result page.  In the Chrome console, type: `$x("//a")`. This allows us to use a xpath expression to select all links.
 
 **EXERCISE**: How could could you select all the search results links on Google? Write the xpath query.
 
 ## Writing Selenium Tests
 
-A selenium test is essentially a unit test that generally does the following:
+A [Selenium](http://www.seleniumhq.org/) test is essentially a unit test that generally does the following:
 
-1. Visit an application page.
-2. Locate target item (using a resource id or xpath) and performs an action.
-3. Verify the resulting DOM's properites with assertions.
+1. Loads a web page.
+2. Locates a target item (using a resource id or xpath) and performs an action.
+3. Verifies the resulting DOM's properites with assertions.
 
 To visit a page, you can simply give a URL.
 
@@ -70,7 +70,7 @@ span.getAttribute();
 
 ### Waiting for Loading.
 
-Unfortunately, due to the dynamic nature of html and javascript, pages and actions can load asynchronously, which we need to wait for the page to reach the correct state.
+Unfortunately, due to the dynamic nature of HTML and Javascript, pages loads and actions can take place asynchronously, which we need to wait for the page to reach the correct state before interacting with it.
 
 There are generally two strategies for waiting. 
 
@@ -84,28 +84,29 @@ An *implicit wait* will wait for a set limit of time before timing out if an ele
 
 2. Explicit waits.
 
-   An explicit wait will wait until a defined certain conditions to occur before continuing to the next step. For example, this will wait until a span is visible on the page.
+   An explicit wait will wait until a defined certain conditions to occur before continuing to the next step. For example, this will wait until the desired `span` element is visible on the page.
 
    ```java
    WebDriverWait wait = new WebDriverWait(driver, 30);
 	wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("//span[@id='currentCoffee']")));
    ```
 
-   For angular, it is possible to use a helper class to wait for to finish data-binding:
+   For Angular, it is possible to use a helper class to wait for to finish data-binding:
 
    ```java
    new NgWebDriver((ChromeDriver)driver).waitForAngularRequestsToFinish();
    ```
+   **Note**: Particularly for Javascript-based applications, such as the CoffeeMaker app and iTrust2, explicit waits result in more reliable tests.
 
 ### Expired objects
 
-When a page changes, you may receive a `StaleElementReferenceException`. This occurs when a `WebElement` no longer appears in the page's DOM, but you're still trying to iteract with it. One way to avoid this problem is to store the raw value (string/int) you need from the WebElement, before performing an action that changes the page.
+When a page changes, you may receive a `StaleElementReferenceException`. This occurs when a `WebElement` no longer appears in the page's DOM, but you're still trying to iteract with it. One way to avoid this problem is to store the raw value (String/int) you need from the WebElement before performing an action that changes the page.
 
 ## Practice
 
-1. Create a new selenium test that fills in the Add Recipe Form.
+1. Create a new Selenium test that fills in the Add Recipe Form.
 2. Create a test that deletes all receipes.
-3. Verify an error message is displayed when Making Coffee, without a recipe.
+3. Verify an error message is displayed when Making Coffee without first selecting a recipe.
 
 ## Onboarding Project Task
 
