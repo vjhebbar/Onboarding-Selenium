@@ -1,6 +1,6 @@
 # Selenium
 
-For this workshop, we will practice using Selenium, which is a powerful tool for scripting web browsers, such as Chrome. Selenium can be useful for supporting automatic *integration and acceptance testing* of a web applications. Additionally, Selenium can be integrated with continuous integration systems, such as Jenkins, to verify software changes in an automated build system.
+For this workshop, we will practice using [Selenium](http://www.seleniumhq.org/), which is a powerful tool for scripting web browsers, such as Chrome. Selenium can be useful for supporting automatic *integration and acceptance testing* of a web applications. Additionally, Selenium can be integrated with continuous integration systems, such as Jenkins, to verify software changes in an automated build system.
 
 ## Preq
 
@@ -41,7 +41,7 @@ Let's play around in Chrome's console (Hit `F12`, and then click `Console` to op
 
 ## Writing Selenium Tests
 
-A [Selenium](http://www.seleniumhq.org/) test is essentially a unit test that generally does the following:
+A Selenium test is essentially a unit test that generally does the following:
 
 1. Loads a web page.
 2. Locates a target item (using a resource id or xpath) and performs an action.
