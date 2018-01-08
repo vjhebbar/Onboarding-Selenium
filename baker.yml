@@ -1,0 +1,8 @@
+---
+name: onboard-selenium
+vagrant:
+  ip: 192.168.9.11
+lang:
+  - java8
+tools:
+  - maven
