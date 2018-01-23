@@ -1,124 +1,107 @@
 package selenium.tests;
 
-import static org.junit.Assert.*;
-
-import java.util.List;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import org.junit.AfterClass;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 import org.openqa.selenium.By;
-import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
-//import org.openqa.selenium.htmlunit.HtmlUnitDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
+import com.paulhammant.ngwebdriver.NgWebDriver;
 
 import io.github.bonigarcia.wdm.ChromeDriverManager;
 
-import com.paulhammant.ngwebdriver.NgWebDriver;
+public class WebTest {
+    private static WebDriver driver;
+    private final String     ROOT = "http://localhost:8080/";
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.*;
+    @BeforeClass
+    public static void setUp () throws Exception {
+        // driver = new HtmlUnitDriver();
+        ChromeDriverManager.getInstance().setup();
+        final ChromeOptions options = new ChromeOptions();
+        options.addArguments( "headless" );
+        options.addArguments( "window-size=1200x600" );
+        options.addArguments( "blink-settings=imagesEnabled=false" );
+        driver = new ChromeDriver( options );
+    }
 
-public class WebTest
-{
-	private static WebDriver driver;
-	private String ROOT = "http://192.168.8.8:8080/";
-	
-	@BeforeClass
-	public static void setUp() throws Exception 
-	{
-		//driver = new HtmlUnitDriver();
-		ChromeDriverManager.getInstance().setup();
-		ChromeOptions options = new ChromeOptions();
-		options.addArguments("headless");
-		options.addArguments("window-size=1200x600");
-		options.addArguments("blink-settings=imagesEnabled=false");
-		driver = new ChromeDriver(options);
-	}
-	
-	@AfterClass
-	public static void  tearDown() throws Exception
-	{
-		driver.close();
-		driver.quit();
-	}
+    @AfterClass
+    public static void tearDown () throws Exception {
+        driver.close();
+        driver.quit();
+    }
 
-	
-	@Test
-	public void googleExists() throws Exception
-	{
-		driver.get("http://www.google.com");
-        assertEquals("Google", driver.getTitle());		
-	}
-	
-	private static void WaitForAngularToLoad()
-	{
-		new NgWebDriver((ChromeDriver)driver).waitForAngularRequestsToFinish();
-	}
+    @Test
+    public void googleExists () throws Exception {
+        driver.get( "http://www.google.com" );
+        assertEquals( "Google", driver.getTitle() );
+    }
 
-	@Test
-	public void NeverRunOutOfCoffee() throws Exception
-	{
-		driver.get(ROOT+"inventory.html");
+    private static void WaitForAngularToLoad () {
+        new NgWebDriver( (ChromeDriver) driver ).waitForAngularRequestsToFinish();
+    }
 
-		String xPath = "//span[@id='currentCoffee']";
-		
-		//WebDriverWait wait = new WebDriverWait(driver, 30);
-		//wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xPath)));
+    @Test
+    public void NeverRunOutOfCoffee () throws Exception {
+        driver.get( ROOT + "inventory.html" );
 
-		WaitForAngularToLoad();
-		WebElement span = driver.findElement(By.xpath(xPath));
+        final String xPath = "//span[@id='currentCoffee']";
 
-		assertNotNull(span);
-		assertThat("We always have coffee", Integer.parseInt(span.getText()),
-				   greaterThan(0));
-	}
+        // WebDriverWait wait = new WebDriverWait(driver, 30);
+        // wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(xPath)));
 
-	@Test
-	public void VerifyAddInventory() throws Exception
-	{
-		driver.get(ROOT+"inventory.html");
-		
-		WaitForAngularToLoad();
+        WaitForAngularToLoad();
+        final WebElement span = driver.findElement( By.xpath( xPath ) );
 
-		String coffeeValue = driver.findElement(By.xpath("//span[@id='currentCoffee']")).getText();
-		String milkValue = driver.findElement(By.xpath("//span[@id='currentMilk']")).getText();
-		String sugarValue = driver.findElement(By.xpath("//span[@id='currentSugar']")).getText();
-		String chocolateValue = driver.findElement(By.xpath("//span[@id='currentChocolate']")).getText();
+        assertNotNull( span );
+        assertThat( "We always have coffee", Integer.parseInt( span.getText() ), greaterThan( 0 ) );
+    }
 
-		WebElement coffeeInput = driver.findElement(By.xpath("//input[@name='coffee']"));
-		WebElement milkInput = driver.findElement(By.xpath("//input[@name='milk']"));
-		WebElement sugarInput = driver.findElement(By.xpath("//input[@name='sugar']"));
-		WebElement chocolateInput = driver.findElement(By.xpath("//input[@name='chocolate']"));
+    @Test
+    public void VerifyAddInventory () throws Exception {
+        driver.get( ROOT + "inventory.html" );
 
-		coffeeInput.sendKeys("1");
-		milkInput.sendKeys("1");
-		sugarInput.sendKeys("1");
-		chocolateInput.sendKeys("1");
+        WaitForAngularToLoad();
 
-		WebElement button = driver.findElement(By.xpath("//input[@value='Submit']"));
-		button.click();
+        final String coffeeValue = driver.findElement( By.xpath( "//span[@id='currentCoffee']" ) ).getText();
+        final String milkValue = driver.findElement( By.xpath( "//span[@id='currentMilk']" ) ).getText();
+        final String sugarValue = driver.findElement( By.xpath( "//span[@id='currentSugar']" ) ).getText();
+        final String chocolateValue = driver.findElement( By.xpath( "//span[@id='currentChocolate']" ) ).getText();
 
-		// Get page again.
-		driver.get(ROOT+"inventory.html");
-		WaitForAngularToLoad();
+        final WebElement coffeeInput = driver.findElement( By.xpath( "//input[@name='coffee']" ) );
+        final WebElement milkInput = driver.findElement( By.xpath( "//input[@name='milk']" ) );
+        final WebElement sugarInput = driver.findElement( By.xpath( "//input[@name='sugar']" ) );
+        final WebElement chocolateInput = driver.findElement( By.xpath( "//input[@name='chocolate']" ) );
 
-		String currentCoffee = driver.findElement(By.xpath("//span[@id='currentCoffee']")).getText();
-		String currentMilk = driver.findElement(By.xpath("//span[@id='currentMilk']")).getText();
-		String currentSugar = driver.findElement(By.xpath("//span[@id='currentSugar']")).getText();
-		String currentChocolate = driver.findElement(By.xpath("//span[@id='currentChocolate']")).getText();
+        coffeeInput.sendKeys( "1" );
+        milkInput.sendKeys( "1" );
+        sugarInput.sendKeys( "1" );
+        chocolateInput.sendKeys( "1" );
 
-		assertEquals(Integer.parseInt(currentCoffee), Integer.parseInt(coffeeValue)+1);
-		assertEquals(Integer.parseInt(currentMilk), Integer.parseInt(milkValue)+1);
-		assertEquals(Integer.parseInt(currentSugar), Integer.parseInt(sugarValue)+1);
-		assertEquals(Integer.parseInt(currentChocolate), Integer.parseInt(chocolateValue)+1);
-	}
+        final WebElement button = driver.findElement( By.xpath( "//input[@value='Submit']" ) );
+        button.click();
+
+        // Get page again.
+        driver.get( ROOT + "inventory.html" );
+        WaitForAngularToLoad();
+
+        final String currentCoffee = driver.findElement( By.xpath( "//span[@id='currentCoffee']" ) ).getText();
+        final String currentMilk = driver.findElement( By.xpath( "//span[@id='currentMilk']" ) ).getText();
+        final String currentSugar = driver.findElement( By.xpath( "//span[@id='currentSugar']" ) ).getText();
+        final String currentChocolate = driver.findElement( By.xpath( "//span[@id='currentChocolate']" ) ).getText();
+
+        assertEquals( Integer.parseInt( currentCoffee ), Integer.parseInt( coffeeValue ) + 1 );
+        assertEquals( Integer.parseInt( currentMilk ), Integer.parseInt( milkValue ) + 1 );
+        assertEquals( Integer.parseInt( currentSugar ), Integer.parseInt( sugarValue ) + 1 );
+        assertEquals( Integer.parseInt( currentChocolate ), Integer.parseInt( chocolateValue ) + 1 );
+    }
 
 }

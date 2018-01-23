@@ -8,7 +8,9 @@ For this workshop, we will practice using [Selenium](http://www.seleniumhq.org/)
 * Chrome version >= 60 (for headless browser support).
 * From Eclipse, use Import Existing Maven project. 
 
-Clone this repo, then in Eclipse, run JUnit tests. Optionally, in the console, run `mvn test`. You should see 3 passing test cases.
+Clone the base Onboarding project [repo](https://github.ncsu.edu/engr-csc326-staff/Onboarding/), then import it into Eclipse (use Import -> Maven -> Existing Maven Projects).  Run the Maven build (provide the goal `spring-boot:run` as normal).  Verify that the site is accessible at `localhost:8080` via your web browser.  Alternatively, you can run `mvn spring-boot:run` from the console instead of running the Maven build inside Eclipse.
+
+Clone this repo, then import it into Eclipse as above, and then right-click on the project and select Run As -> JUnit Test. Alternatively, in the console, run `mvn test`. You should see 3 passing test cases.
 
 ## Concepts
 
