@@ -20,7 +20,7 @@ import io.github.bonigarcia.wdm.ChromeDriverManager;
 
 public class WebTest {
     private static WebDriver driver;
-    private final String     ROOT = "http://localhost:8080/";
+    private final String     ROOT = "http://" + System.getProperty("server_ip") + ":8080/";
 
     @BeforeClass
     public static void setUp () throws Exception {
