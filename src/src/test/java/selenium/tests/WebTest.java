@@ -28,6 +28,7 @@ public class WebTest {
         ChromeDriverManager.getInstance().setup();
         final ChromeOptions options = new ChromeOptions();
         options.addArguments( "headless" );
+        options.addArguments("no-sandbox");
         options.addArguments( "window-size=1200x600" );
         options.addArguments( "blink-settings=imagesEnabled=false" );
         driver = new ChromeDriver( options );
